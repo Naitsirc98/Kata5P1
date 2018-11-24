@@ -2,6 +2,7 @@ package kata5;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -9,9 +10,28 @@ import java.sql.Statement;
 public class Kata5 {
 
 	public static void main(String[] args) {
-		createTable();
+		
+		MailListReader.read("email.txt").forEach(line -> insert(line));	
+		
 	}
-	
+
+	private static void insert(final String email) {
+		
+		String sql = "INSERT INTO EMAIL(Mail) VALUES(?)";
+		
+		try (Connection conn = connect();
+				PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			
+			pstmt.setString(1, email);
+			
+			pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+
 	private static void createTable() {
 
 		String url = "jdbc:sqlite:KATA5.db";
@@ -53,7 +73,7 @@ public class Kata5 {
 
 	private static void selectAll() {
 
-		String sql = "SELECT * FROM PEOPLE";
+		String sql = "SELECT * FROM EMAIL";
 
 		try (Connection conn = connect();
 				Statement stmt = conn.createStatement();
