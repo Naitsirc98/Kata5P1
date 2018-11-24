@@ -1,7 +1,6 @@
 package kata5;
 
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,29 +9,12 @@ import java.sql.Statement;
 public class Kata5 {
 
 	public static void main(String[] args) {
-		createDB();
 		createTable();
 	}
-
-	private static void createDB() {
-		
-		String url = "jdbc:sqlite:Mails.db";
-		
-		try (Connection conn = DriverManager.getConnection(url)) {
-			
-			if (conn != null) {
-				DatabaseMetaData meta = conn.getMetaData();
-				System.out.println("El driver es " + meta.getDriverName());
-				System.out.println("Se ha creado una nueva BD.");
-			}
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-		} 
-	}
-
+	
 	private static void createTable() {
 
-		String url = "jdbc:sqlite:EmailsDB.db";
+		String url = "jdbc:sqlite:KATA5.db";
 
 		String sql = "CREATE TABLE IF NOT EXISTS EMAIL (\n"
 				+ " ID integer PRIMARY KEY AUTOINCREMENT,\n"
